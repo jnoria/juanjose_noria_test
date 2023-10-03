@@ -2,9 +2,9 @@
 
 This is a solution for technical test. 
 
-Use Node version 16+:
+## Pre-requisites
 
-- Install Node 16:
+- Install Node 16x or higher:
   - Mac: `brew install node@16`
   - Other: [nodejs.org/en/download/](https://nodejs.org/en/download/)
 - Or use a Node version manager: [`fnm`](https://github.com/Schniz/fnm#readme)
@@ -16,6 +16,8 @@ Your goal for this question is to write a program that accepts two lines (x1
 ## Question B
 
 The goal of this question is to write a software library that accepts 2 version string as input and returns whether one is greater than, equal, or less than the other. As an example: “1.2” is greater than “1.1”. Please provide all test cases you could think of.
+
+Library: https://www.npmjs.com/package/jnoria-version-compare
 
 ## Question C
 

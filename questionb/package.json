@@ -1,6 +1,6 @@
 {
   "name": "jnoria-version-compare",
-  "version": "0.0.6",
+  "version": "1.0.0",
   "description": "Software library that accepts 2 version string as input and returns whether one is greater than, equal, or less than the other.",
   "main": "dist/version-compare.js",
   "types": "dist/version-compare.d.ts",
