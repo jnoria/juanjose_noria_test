@@ -1,0 +1,30 @@
+{
+  "name": "jnoria-version-compare",
+  "version": "0.0.6",
+  "description": "Software library that accepts 2 version string as input and returns whether one is greater than, equal, or less than the other.",
+  "main": "dist/version-compare.js",
+  "types": "dist/version-compare.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "main": "tsc --build && node dist/index.js",
+    "test": "jest",
+    "coverage": "jest --coverage"
+  },
+  "keywords": [],
+  "author": "Juan Noria",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^29.5.5",
+    "@types/node": "^20.7.1",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.2.2"
+  }
+}

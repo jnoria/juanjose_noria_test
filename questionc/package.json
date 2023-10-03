@@ -1,0 +1,27 @@
+{
+  "name": "jnoria-redis-lru-cache",
+  "version": "0.0.1",
+  "description": "Geo Distributed LRU (Least Recently Used) cache with time expiration",
+  "main": "dist/lru-cache.js",
+  "types": "dist/lru-cache.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "prompt": "tsc --build && node dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "redis": "^4.6.10"
+  }
+}
