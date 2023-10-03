@@ -16,24 +16,25 @@ export default class LruCache {
 
 
 
-  constructor(redisClient: RedisClientType, cacheName: string, maxSize: number, expirationTime: number = 0) {
+  constructor(redisClient: RedisClientType, cacheName: string, maxSize: number=100, expirationTime: number = 0) {
     this.isInitialized = false;
     this.cacheName = cacheName;
     this.redisClient = redisClient;
     this.maxSize = maxSize;
     this.expirationTime = expirationTime;
     this.cache = new Map<string, any>();
-    if (!this.redisClient || !this.redisClient.isReady || !this.redisClient.isOpen) throw Error(LruCache.ERROR_INVALID_REDIS);
+    if (!this.redisClient || !this.redisClient.isReady || !this.redisClient.isOpen) throw new Error(LruCache.ERROR_INVALID_REDIS);
   }
 
-  async init() {
+  async init(): Promise<void> {
     this.isInitialized = true;
     this.cache = await this.getAll();
+    return;
   }
 
 
-  async put(key: string, value: string) {
-    if (! this.isInitialized) throw Error(LruCache.ERROR_CACHE_NOT_INITIALIZED);
+  async put(key: string, value: string): Promise<void> {
+    if (! this.isInitialized) throw new Error(LruCache.ERROR_CACHE_NOT_INITIALIZED);
     if (this.cache.size >= this.maxSize) {
       const leastRecentlyUsedKey = this.cache.keys().next().value
       this.cache.delete(leastRecentlyUsedKey);
@@ -42,11 +43,12 @@ export default class LruCache {
     this.cache.set(key, value)
     await this.setNodeToRedis(key, value);
     this.setNodeExpirationTime(key);
+    return;
   }
 
 
   async get(key: string): Promise<any> {
-    if (! this.isInitialized) throw Error(LruCache.ERROR_CACHE_NOT_INITIALIZED);
+    if (! this.isInitialized) throw new Error(LruCache.ERROR_CACHE_NOT_INITIALIZED);
     const item = this.cache.get(key)
     if (item != undefined) {
       this.cache.delete(key)
@@ -60,19 +62,19 @@ export default class LruCache {
   }
 
   async delete(key: string): Promise<void> {
-    if (! this.isInitialized) throw Error(LruCache.ERROR_CACHE_NOT_INITIALIZED);
+    if (! this.isInitialized) throw new Error(LruCache.ERROR_CACHE_NOT_INITIALIZED);
     this.cache.delete(key);
     await this.removeNodeFromRedis(key);
   }
 
   async clear(): Promise<void> {
-    if (! this.isInitialized) throw Error(LruCache.ERROR_CACHE_NOT_INITIALIZED);
+    if (! this.isInitialized) throw new Error(LruCache.ERROR_CACHE_NOT_INITIALIZED);
     this.cache.clear();
     await this.flushRedis();
   }
 
   async getAll(): Promise<Map<string, string>> {
-    if (! this.isInitialized) throw Error(LruCache.ERROR_CACHE_NOT_INITIALIZED);
+    if (! this.isInitialized) throw new Error(LruCache.ERROR_CACHE_NOT_INITIALIZED);
     const _cache = new Map<string, string>();
     const elements = await this.getAllNodesFromRedis();
     if (elements) {
@@ -100,7 +102,7 @@ export default class LruCache {
     this.redisClient.hSet(this.cacheName, key, value);
   }
 
-  private async getNodeFromRedis(key: string): Promise<string> {
+  private async getNodeFromRedis(key: string): Promise<string| undefined> {
     return this.redisClient.hGet(this.cacheName, key);
   }
 
