@@ -26,31 +26,28 @@ At Ormuco, we want to optimize every bits of software we write. Your goal is to 
  
 
     1 - Simplicity. Integration needs to be dead simple. 
-
         Library installation via package manager npm
 
     2 - Resilient to network failures or crashes. 
-
         The elements are stores on redis server.
 
     3 - Near real time replication of data across Geolocation. Writes need to be in real time. 
-    
-        Redis can be used as a Active-Active Geo-Distribution cluster. If we would want to use this feature, the code could be modified using redis cluster.
+        Redis can be used as a Active-Active Geo-Distribution cluster. 
+        If we would want to use this feature, the code could be modified using redis cluster.
+        https://redis.com/redis-enterprise/technology/active-active-geo-distribution/
 
     4 - Data consistency across regions
-
-         Redis can be used as a Active-Active Geo-Distribution cluster. If we would want to use this feature, the code could be modified using redis cluster.
+        Redis can be used as a Active-Active Geo-Distribution cluster. 
+        If we would want to use this feature, the code could be modified using redis cluster.
 
     5 - Locality of reference, data should almost always be available from the closest region
-
-        Redis can be used as a Active-Active Geo-Distribution cluster. If we would want to use this feature, the code could be modified using redis cluster.
+        Redis can be used as a Active-Active Geo-Distribution cluster. 
+        If we would want to use this feature, the code could be modified using redis cluster.
 
     6 - Flexible Schema
-
         The first version only accepts strings values, but it could be modified for json values
 
     7 - Cache can expire 
-
         Use timeExpiration param
 
 Library: https://www.npmjs.com/package/jnoria-redis-lru-cache
