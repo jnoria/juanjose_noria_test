@@ -49,6 +49,7 @@ export default class LruCache {
 
   async get(key: string): Promise<any> {
     if (! this.isInitialized) throw new Error(LruCache.ERROR_CACHE_NOT_INITIALIZED);
+    this.cache = await this.getAll();
     const item = this.cache.get(key)
     if (item != undefined) {
       this.cache.delete(key)
@@ -70,7 +71,8 @@ export default class LruCache {
   async clear(): Promise<void> {
     if (! this.isInitialized) throw new Error(LruCache.ERROR_CACHE_NOT_INITIALIZED);
     this.cache.clear();
-    await this.flushRedis();
+    await this.redisClient.del(this.cacheName);
+    //await this.flushRedis();
   }
 
   async getAll(): Promise<Map<string, string>> {
@@ -98,7 +100,7 @@ export default class LruCache {
   }
 
   private async setNodeToRedis(key: string, value: string): Promise<void> {
-    console.log("=>Setting to redis: Cache=" + this.cacheName + " Key=" + key + " Value:" + value);
+    //console.log("=>Setting to redis: Cache=" + this.cacheName + " Key=" + key + " Value:" + value);
     this.redisClient.hSet(this.cacheName, key, value);
   }
 
@@ -107,7 +109,12 @@ export default class LruCache {
   }
 
   private async removeNodeFromRedis(key: string): Promise<void> {
-    this.redisClient.hDel(this.cacheName, key);
+    try{
+      this.redisClient.hDel(this.cacheName, key);
+      //console.log("DELETED: "+ key);
+    }catch (e){
+      console.log(e);
+    }
   }
 
   private async flushRedis(): Promise<void> {
@@ -117,9 +124,9 @@ export default class LruCache {
   private setNodeExpirationTime(key: string){
        if (this.expirationTime > 0){
          setTimeout(async (_key: string)=> {
-            console.log("Deleting " + _key + " by expirationTime");
             if (this.cache.get(_key)) {
-              await this.delete(_key);
+              this.cache.delete(_key);
+              await this.removeNodeFromRedis(_key);
           }
          }, this.expirationTime * 1000, key);
        }

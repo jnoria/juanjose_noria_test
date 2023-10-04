@@ -1,6 +1,6 @@
 {
   "name": "jnoria-redis-lru-cache",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "LRU (Least Recently Used) cache with time expiration using redis",
   "main": "dist/lru-cache.js",
   "types": "dist/lru-cache.d.ts",
@@ -13,7 +13,7 @@
   "scripts": {
     "build": "tsc --build",
     "clean": "tsc --build --clean",
-    "test": "jest",
+    "test": "jest --runInBand --detectOpenHandles --forceExit",
     "coverage": "jest --coverage"
   },
   "keywords": [],
